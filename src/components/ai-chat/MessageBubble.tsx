@@ -108,7 +108,7 @@ export default function MessageBubble({ message, onSaveToNote }: MessageBubblePr
             'rounded-2xl px-4 py-2.5 text-sm leading-relaxed',
             isUser
               ? 'rounded-tr-sm bg-blue-600 text-white'
-              : 'rounded-tl-sm border border-slate-200 bg-white text-slate-800'
+              : 'rounded-tl-sm border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] text-slate-800 dark:text-slate-100'
           )}
         >
           {isUser ? (
@@ -127,7 +127,7 @@ export default function MessageBubble({ message, onSaveToNote }: MessageBubblePr
 
         {/* 底部信息栏 */}
         <div className="flex items-center gap-2 px-1">
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-slate-400 dark:text-slate-500">
             {formatTime(message.createdAt)}
           </span>
 
@@ -135,7 +135,7 @@ export default function MessageBubble({ message, onSaveToNote }: MessageBubblePr
             <div className="flex items-center gap-1">
               <button
                 onClick={handleCopy}
-                className="rounded px-1.5 py-0.5 text-xs text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                className="rounded px-1.5 py-0.5 text-xs text-slate-400 dark:text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-[#2e303a] hover:text-slate-600 dark:hover:text-slate-300"
                 title="复制"
               >
                 {copied ? '已复制' : '复制'}
@@ -144,7 +144,7 @@ export default function MessageBubble({ message, onSaveToNote }: MessageBubblePr
               {onSaveToNote && (
                 <button
                   onClick={() => onSaveToNote(message.content)}
-                  className="rounded px-1.5 py-0.5 text-xs text-slate-400 transition-colors hover:bg-blue-50 hover:text-blue-600"
+                  className="rounded px-1.5 py-0.5 text-xs text-slate-400 dark:text-slate-500 transition-colors hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-300"
                   title="保存到笔记"
                 >
                   保存到笔记

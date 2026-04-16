@@ -364,11 +364,11 @@ export default function ChatPanel() {
   }
 
   return (
-    <div className="flex h-full flex-col bg-slate-50">
+    <div className="flex h-full flex-col bg-slate-50 dark:bg-[#16171d]">
       {/* 消息列表区域 */}
       <div className="flex-1 overflow-y-auto px-4 py-6">
         {storeMessages.length === 0 && !streamingContent ? (
-          <div className="flex h-full flex-col items-center justify-center text-slate-400">
+          <div className="flex h-full flex-col items-center justify-center text-slate-400 dark:text-slate-500">
             <div className="mb-4 text-5xl">💬</div>
             <p className="text-lg font-medium">开始新的对话</p>
             <p className="mt-1 text-sm">输入你的问题，AI 将为你解答</p>
@@ -407,7 +407,7 @@ export default function ChatPanel() {
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-500 text-sm font-medium text-white">
                   AI
                 </div>
-                <div className="rounded-2xl rounded-tl-sm border border-slate-200 bg-white px-4 py-3">
+                <div className="rounded-2xl rounded-tl-sm border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] px-4 py-3">
                   <div className="flex items-center gap-1">
                     <div className="h-2 w-2 animate-bounce rounded-full bg-slate-400" style={{ animationDelay: '0ms' }} />
                     <div className="h-2 w-2 animate-bounce rounded-full bg-slate-400" style={{ animationDelay: '150ms' }} />
@@ -423,12 +423,12 @@ export default function ChatPanel() {
       </div>
 
       {/* 底部输入区域 */}
-      <div className="border-t border-slate-200 bg-white px-4 py-3">
+      <div className="border-t border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#16171d] px-4 py-3">
         {/* 图片预览 */}
         {imagePreview && (
           <div className="mx-auto mb-2 flex max-w-3xl items-center gap-2">
             <div className="relative">
-              <img src={imagePreview} alt="上传的图片" className="h-20 w-20 rounded-lg object-cover border border-slate-200" />
+              <img src={imagePreview} alt="上传的图片" className="h-20 w-20 rounded-lg object-cover border border-slate-200 dark:border-[#2e303a]" />
               <button
                 onClick={removeImage}
                 className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-white text-xs hover:bg-slate-900"
@@ -436,7 +436,7 @@ export default function ChatPanel() {
                 ×
               </button>
             </div>
-            <span className="text-xs text-slate-400">图片已添加，发送时将一同提交</span>
+            <span className="text-xs text-slate-400 dark:text-slate-500">图片已添加，发送时将一同提交</span>
           </div>
         )}
 
@@ -448,7 +448,7 @@ export default function ChatPanel() {
           <button
             type="button"
             onClick={handleImageUpload}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-slate-400 dark:text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-[#2e303a] hover:text-slate-600 dark:hover:text-slate-300"
             title="上传图片"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -475,7 +475,7 @@ export default function ChatPanel() {
               onPaste={handlePaste}
               placeholder="输入消息... (Shift+Enter 换行，可粘贴图片)"
               rows={1}
-              className="max-h-[200px] min-h-[40px] w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 pr-12 text-sm text-slate-800 outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20"
+              className="max-h-[200px] min-h-[40px] w-full resize-none rounded-xl border border-slate-200 dark:border-[#2e303a] bg-slate-50 dark:bg-[#1f2028] px-4 py-2.5 pr-12 text-sm text-slate-800 dark:text-slate-100 outline-none transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-blue-500 focus:bg-white dark:focus:bg-[#1f2028] focus:ring-2 focus:ring-blue-500/20"
             />
           </div>
 
@@ -487,7 +487,7 @@ export default function ChatPanel() {
               'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors',
               (input.trim() || imagePreview) && !isLoading
                 ? 'bg-blue-600 text-white hover:bg-blue-700'
-                : 'cursor-not-allowed bg-slate-100 text-slate-400'
+                : 'cursor-not-allowed bg-slate-100 dark:bg-[#2e303a] text-slate-400 dark:text-slate-500'
             )}
             title="发送"
           >
@@ -497,7 +497,7 @@ export default function ChatPanel() {
           </button>
         </form>
 
-        <p className="mx-auto mt-2 max-w-3xl text-center text-xs text-slate-400">
+        <p className="mx-auto mt-2 max-w-3xl text-center text-xs text-slate-400 dark:text-slate-500">
           当前模型：{aiModel} | {aiProvider === 'qwen' ? '通义千问' : aiProvider === 'deepseek' ? 'DeepSeek' : 'OpenAI'}
         </p>
       </div>

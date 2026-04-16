@@ -77,20 +77,20 @@ export default function SaveToNoteModal({
       />
 
       {/* 弹窗 */}
-      <div className="relative z-10 w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-xl">
-        <h3 className="mb-4 text-lg font-semibold text-slate-800">
+      <div className="relative z-10 w-full max-w-md rounded-xl border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#16171d] p-6 shadow-xl">
+        <h3 className="mb-4 text-lg font-semibold text-slate-800 dark:text-slate-100">
           保存到笔记
         </h3>
 
         {/* 选择笔记本 */}
         <div className="mb-4">
-          <label className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
             目标笔记本
           </label>
           <select
             value={selectedNotebookId ?? ''}
             onChange={(e) => setSelectedNotebookId(Number(e.target.value))}
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            className="w-full rounded-lg border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] px-3 py-2 text-sm text-slate-800 dark:text-slate-100 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
           >
             {notebooks.length === 0 && (
               <option value="" disabled>
@@ -107,7 +107,7 @@ export default function SaveToNoteModal({
 
         {/* 标题 */}
         <div className="mb-4">
-          <label className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
             标题
           </label>
           <input
@@ -115,25 +115,25 @@ export default function SaveToNoteModal({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="输入笔记标题..."
-            className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            className="w-full rounded-lg border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] px-3 py-2 text-sm text-slate-800 dark:text-slate-100 outline-none transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
           />
         </div>
 
         {/* 标签 */}
         <div className="mb-6">
-          <label className="mb-1.5 block text-sm font-medium text-slate-700">
+          <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
             标签
           </label>
-          <div className="flex flex-wrap gap-1.5 rounded-lg border border-slate-200 bg-white px-2 py-1.5">
+          <div className="flex flex-wrap gap-1.5 rounded-lg border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] px-2 py-1.5">
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700"
+                className="inline-flex items-center gap-1 rounded-md bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300"
               >
                 {tag}
                 <button
                   onClick={() => handleRemoveTag(tag)}
-                  className="ml-0.5 text-blue-400 hover:text-blue-600"
+                  className="ml-0.5 text-blue-400 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
                 >
                   &times;
                 </button>
@@ -145,7 +145,7 @@ export default function SaveToNoteModal({
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleTagKeyDown}
               placeholder={tags.length === 0 ? '输入标签后按回车...' : ''}
-              className="min-w-[80px] flex-1 border-none bg-transparent py-0.5 text-sm text-slate-800 outline-none placeholder:text-slate-400"
+              className="min-w-[80px] flex-1 border-none bg-transparent py-0.5 text-sm text-slate-800 dark:text-slate-100 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500"
             />
           </div>
         </div>
@@ -154,7 +154,7 @@ export default function SaveToNoteModal({
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50"
+            className="rounded-lg border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-[#2e303a]"
           >
             取消
           </button>
@@ -165,7 +165,7 @@ export default function SaveToNoteModal({
               'rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors',
               selectedNotebookId && title.trim() && !saving
                 ? 'bg-blue-600 hover:bg-blue-700'
-                : 'cursor-not-allowed bg-slate-300'
+                : 'cursor-not-allowed bg-slate-300 dark:bg-slate-600'
             )}
           >
             {saving ? '保存中...' : '确认保存'}

@@ -126,7 +126,7 @@ export default function NoteEditor() {
   // 没有选中笔记时显示空状态
   if (!currentNoteId || !currentNote) {
     return (
-      <div className="flex h-full flex-col items-center justify-center bg-slate-50 text-slate-400">
+      <div className="flex h-full flex-col items-center justify-center bg-slate-50 dark:bg-[#16171d] text-slate-400 dark:text-slate-500">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="mb-3 h-12 w-12"
@@ -147,9 +147,9 @@ export default function NoteEditor() {
   }
 
   return (
-    <div className="flex h-full flex-col bg-white">
+    <div className="flex h-full flex-col bg-white dark:bg-[#16171d]">
       {/* 顶部工具栏 */}
-      <div className="border-b border-slate-200 px-6 py-3">
+      <div className="border-b border-slate-200 dark:border-[#2e303a] px-6 py-3">
         {/* 标题 */}
         <input
           ref={titleInputRef}
@@ -157,7 +157,7 @@ export default function NoteEditor() {
           value={title}
           onChange={(e) => handleTitleChange(e.target.value)}
           placeholder="笔记标题..."
-          className="mb-2 w-full text-xl font-semibold text-slate-800 outline-none placeholder:text-slate-300"
+          className="mb-2 w-full text-xl font-semibold text-slate-800 dark:text-slate-100 outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600 bg-transparent"
         />
 
         {/* 标签输入区域 */}
@@ -165,12 +165,12 @@ export default function NoteEditor() {
           {tags.map((tag) => (
             <span
               key={tag}
-              className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700"
+              className="inline-flex items-center gap-1 rounded-md bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-300"
             >
               {tag}
               <button
                 onClick={() => handleRemoveTag(tag)}
-                className="ml-0.5 text-blue-400 hover:text-blue-600"
+                className="ml-0.5 text-blue-400 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
               >
                 &times;
               </button>
@@ -182,7 +182,7 @@ export default function NoteEditor() {
             onChange={(e) => setTagInput(e.target.value)}
             onKeyDown={handleTagKeyDown}
             placeholder="添加标签..."
-            className="min-w-[80px] border-none bg-transparent py-0.5 text-xs text-slate-500 outline-none placeholder:text-slate-300"
+            className="min-w-[80px] border-none bg-transparent py-0.5 text-xs text-slate-500 dark:text-slate-400 outline-none placeholder:text-slate-300 dark:placeholder:text-slate-600"
           />
         </div>
       </div>
@@ -197,7 +197,7 @@ export default function NoteEditor() {
       </div>
 
       {/* 底部状态栏 */}
-      <div className="flex items-center justify-between border-t border-slate-200 px-6 py-1.5 text-xs text-slate-400">
+      <div className="flex items-center justify-between border-t border-slate-200 dark:border-[#2e303a] px-6 py-1.5 text-xs text-slate-400 dark:text-slate-500">
         <span>{content.replace(/<[^>]*>/g, '').length} 字</span>
         <span>自动保存已开启</span>
       </div>

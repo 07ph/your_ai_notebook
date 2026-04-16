@@ -160,16 +160,16 @@ export function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="mb-8 text-2xl font-bold text-slate-800">设置</h1>
+      <h1 className="mb-8 text-2xl font-bold text-slate-800 dark:text-slate-100">设置</h1>
 
       {/* ========== AI 配置区域 ========== */}
       <section className="mb-8">
-        <h2 className="mb-4 text-lg font-semibold text-slate-700">AI 配置</h2>
+        <h2 className="mb-4 text-lg font-semibold text-slate-700 dark:text-slate-300">AI 配置</h2>
 
-        <div className="space-y-5 rounded-xl border border-slate-200 bg-white p-5">
+        <div className="space-y-5 rounded-xl border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#16171d] p-5">
           {/* Provider 选择 */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-600">
+            <label className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-400">
               服务商
             </label>
             <div className="flex gap-2">
@@ -180,8 +180,8 @@ export function SettingsPage() {
                   className={cn(
                     'flex-1 rounded-lg border px-4 py-2 text-sm font-medium transition-colors',
                     aiProvider === p.key
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50'
+                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
+                      : 'border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-[#2e303a]'
                   )}
                 >
                   {p.label}
@@ -192,7 +192,7 @@ export function SettingsPage() {
 
           {/* API Key 输入 */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-600">
+            <label className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-400">
               API Key
             </label>
             <div className="relative">
@@ -201,12 +201,12 @@ export function SettingsPage() {
                 value={aiApiKey}
                 onChange={(e) => setAIApiKey(e.target.value)}
                 placeholder="输入你的 API Key..."
-                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2 pr-10 text-sm text-slate-800 outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                className="w-full rounded-lg border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] px-4 py-2 pr-10 text-sm text-slate-800 dark:text-slate-100 outline-none transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
               />
               <button
                 type="button"
                 onClick={() => setShowApiKey(!showApiKey)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition-colors hover:text-slate-600"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 transition-colors hover:text-slate-600 dark:hover:text-slate-300"
                 title={showApiKey ? '隐藏 API Key' : '显示 API Key'}
               >
                 {showApiKey ? (
@@ -228,13 +228,13 @@ export function SettingsPage() {
 
           {/* 模型选择 */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-600">
+            <label className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-400">
               模型
             </label>
             <select
               value={aiModel}
               onChange={(e) => setAIModel(e.target.value)}
-              className="w-full rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm text-slate-800 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+              className="w-full rounded-lg border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] px-4 py-2 text-sm text-slate-800 dark:text-slate-100 outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
             >
               {Object.entries(availableModels).map(([label, value]) => (
                 <option key={value} value={value}>
@@ -247,7 +247,7 @@ export function SettingsPage() {
           {/* System Prompt */}
           <div>
             <div className="mb-2 flex items-center justify-between">
-              <label className="block text-sm font-medium text-slate-600">
+              <label className="block text-sm font-medium text-slate-600 dark:text-slate-400">
                 AI 提示词 (System Prompt)
               </label>
               <button
@@ -256,7 +256,7 @@ export function SettingsPage() {
                     setSystemPrompt('default')
                   }
                 }}
-                className="text-xs text-slate-400 hover:text-blue-600 transition-colors"
+                className="text-xs text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 恢复默认
               </button>
@@ -265,10 +265,10 @@ export function SettingsPage() {
               value={systemPrompt}
               onChange={(e) => setSystemPrompt(e.target.value)}
               rows={12}
-              className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 font-mono leading-relaxed"
+              className="w-full rounded-lg border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] px-4 py-3 text-sm text-slate-800 dark:text-slate-100 outline-none transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 font-mono leading-relaxed"
               placeholder="输入自定义 System Prompt..."
             />
-            <p className="mt-1.5 text-xs text-slate-400">
+            <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500">
               提示词会作为系统消息发送给 AI，影响其回答风格和格式。修改后立即生效。
             </p>
           </div>
@@ -277,10 +277,10 @@ export function SettingsPage() {
 
       {/* ========== 外观设置 ========== */}
       <section className="mb-8">
-        <h2 className="mb-4 text-lg font-semibold text-slate-700">外观</h2>
+        <h2 className="mb-4 text-lg font-semibold text-slate-700 dark:text-slate-300">外观</h2>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
-          <label className="mb-2 block text-sm font-medium text-slate-600">
+        <div className="rounded-xl border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#16171d] p-5">
+          <label className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-400">
             主题
           </label>
           <div className="flex gap-2">
@@ -289,8 +289,8 @@ export function SettingsPage() {
               className={cn(
                 'flex flex-1 items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors',
                 theme === 'light'
-                  ? 'border-amber-400 bg-amber-50 text-amber-700'
-                  : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50'
+                  ? 'border-amber-400 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300'
+                  : 'border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-[#2e303a]'
               )}
             >
               {/* Sun icon */}
@@ -304,8 +304,8 @@ export function SettingsPage() {
               className={cn(
                 'flex flex-1 items-center justify-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors',
                 theme === 'dark'
-                  ? 'border-indigo-400 bg-indigo-50 text-indigo-700'
-                  : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50'
+                  ? 'border-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                  : 'border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#1f2028] text-slate-600 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-[#2e303a]'
               )}
             >
               {/* Moon icon */}
@@ -320,34 +320,34 @@ export function SettingsPage() {
 
       {/* ========== 数据管理 ========== */}
       <section className="mb-8">
-        <h2 className="mb-4 text-lg font-semibold text-slate-700">数据管理</h2>
+        <h2 className="mb-4 text-lg font-semibold text-slate-700 dark:text-slate-300">数据管理</h2>
 
-        <div className="space-y-3 rounded-xl border border-slate-200 bg-white p-5">
+        <div className="space-y-3 rounded-xl border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#16171d] p-5">
           {/* 导出 */}
           <button
             onClick={handleExport}
-            className="flex w-full items-center gap-3 rounded-lg border border-slate-200 px-4 py-3 text-left text-sm text-slate-700 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
+            className="flex w-full items-center gap-3 rounded-lg border border-slate-200 dark:border-[#2e303a] px-4 py-3 text-left text-sm text-slate-700 dark:text-slate-300 transition-colors hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-700 dark:hover:text-blue-300"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg>
             <div>
               <div className="font-medium">导出所有数据</div>
-              <div className="text-xs text-slate-400">将对话、笔记和设置导出为 JSON 文件</div>
+              <div className="text-xs text-slate-400 dark:text-slate-500">将对话、笔记和设置导出为 JSON 文件</div>
             </div>
           </button>
 
           {/* 导入 */}
           <button
             onClick={handleImport}
-            className="flex w-full items-center gap-3 rounded-lg border border-slate-200 px-4 py-3 text-left text-sm text-slate-700 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700"
+            className="flex w-full items-center gap-3 rounded-lg border border-slate-200 dark:border-[#2e303a] px-4 py-3 text-left text-sm text-slate-700 dark:text-slate-300 transition-colors hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-700 dark:hover:text-blue-300"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
             </svg>
             <div>
               <div className="font-medium">导入数据</div>
-              <div className="text-xs text-slate-400">从 JSON 备份文件恢复数据</div>
+              <div className="text-xs text-slate-400 dark:text-slate-500">从 JSON 备份文件恢复数据</div>
             </div>
           </button>
 
@@ -365,8 +365,8 @@ export function SettingsPage() {
             className={cn(
               'flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left text-sm transition-colors',
               confirmClear
-                ? 'border-red-400 bg-red-50 text-red-700'
-                : 'border-slate-200 text-slate-700 hover:border-red-300 hover:bg-red-50 hover:text-red-700'
+                ? 'border-red-400 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
+                : 'border-slate-200 dark:border-[#2e303a] text-slate-700 dark:text-slate-300 hover:border-red-300 dark:hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 dark:hover:text-red-400'
             )}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -376,7 +376,7 @@ export function SettingsPage() {
               <div className="font-medium">
                 {confirmClear ? '确认清空？再次点击以确认' : '清空所有数据'}
               </div>
-              <div className="text-xs text-slate-400">
+              <div className="text-xs text-slate-400 dark:text-slate-500">
                 {confirmClear
                   ? '此操作不可撤销，所有对话和笔记将被永久删除'
                   : '删除所有对话、笔记和设置'}
@@ -388,9 +388,9 @@ export function SettingsPage() {
 
       {/* ========== 关于 ========== */}
       <section>
-        <h2 className="mb-4 text-lg font-semibold text-slate-700">关于</h2>
+        <h2 className="mb-4 text-lg font-semibold text-slate-700 dark:text-slate-300">关于</h2>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
+        <div className="rounded-xl border border-slate-200 dark:border-[#2e303a] bg-white dark:bg-[#16171d] p-5">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
@@ -398,10 +398,10 @@ export function SettingsPage() {
               </svg>
             </div>
             <div>
-              <div className="text-base font-semibold text-slate-800">
+              <div className="text-base font-semibold text-slate-800 dark:text-slate-100">
                 StudyMark - AI 学习助手
               </div>
-              <div className="text-sm text-slate-500">版本 v0.1.0</div>
+              <div className="text-sm text-slate-500 dark:text-slate-400">版本 v0.1.0</div>
             </div>
           </div>
         </div>
