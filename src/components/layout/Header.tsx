@@ -1,9 +1,10 @@
-import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/utils/cn'
+import { useSettingStore } from '@/stores/settingStore'
 
 export function Header() {
-  const [isDark, setIsDark] = useState(false)
+  const { theme, setTheme } = useSettingStore()
+  const isDark = theme === 'dark'
 
   const navItems = [
     { to: '/', label: 'AI 助手' },
@@ -41,11 +42,11 @@ export function Header() {
 
         {/* 主题切换 */}
         <button
-          onClick={() => setIsDark(!isDark)}
+          onClick={() => setTheme(isDark ? 'light' : 'dark')}
           className="flex-shrink-0 w-9 h-9 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-[#2e303a] hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
           aria-label="切换主题"
         >
-          {isDark ? '☀️' : '🌙'}
+          {isDark ? '🌙' : '☀️'}
         </button>
       </div>
     </header>

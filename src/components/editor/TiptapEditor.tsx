@@ -141,7 +141,7 @@ export default function TiptapEditor({ content, onChange, placeholder = '开始�
       onClick={onClick}
       title={title}
       className={cn(
-        'flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700',
+        'flex h-8 w-8 items-center justify-center rounded-md text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-[#2e303a] hover:text-slate-700 dark:hover:text-slate-200',
         isActive && 'bg-blue-50 text-blue-600'
       )}
     >
@@ -153,7 +153,7 @@ export default function TiptapEditor({ content, onChange, placeholder = '开始�
     <div className={cn('flex h-full flex-col border border-slate-200 rounded-lg overflow-hidden', className)}>
       {/* 简化工具栏 */}
       {editable && (
-        <div className="flex flex-wrap items-center gap-0.5 border-b border-slate-200 bg-slate-50/80 px-2 py-1.5">
+        <div className="flex flex-wrap items-center gap-0.5 border-b border-slate-200 dark:border-[#2e303a] bg-slate-50/80 dark:bg-[#1f2028]/80 px-2 py-1.5">
           {/* 标题 */}
           <ToolbarButton onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} isActive={editor.isActive('heading', { level: 1 })} title="一级标题">
             <span className="text-xs font-bold">H1</span>
@@ -162,7 +162,7 @@ export default function TiptapEditor({ content, onChange, placeholder = '开始�
             <span className="text-xs font-bold">H2</span>
           </ToolbarButton>
 
-          <div className="mx-1 h-5 w-px bg-slate-200" />
+          <div className="mx-1 h-5 w-px bg-slate-200 dark:bg-[#2e303a]" />
 
           {/* 格式 */}
           <ToolbarButton onClick={() => editor.chain().focus().toggleBold().run()} isActive={editor.isActive('bold')} title="加粗">
@@ -172,7 +172,7 @@ export default function TiptapEditor({ content, onChange, placeholder = '开始�
             <span className="text-sm italic">I</span>
           </ToolbarButton>
 
-          <div className="mx-1 h-5 w-px bg-slate-200" />
+          <div className="mx-1 h-5 w-px bg-slate-200 dark:bg-[#2e303a]" />
 
           {/* 列表 */}
           <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} isActive={editor.isActive('bulletList')} title="无序列表">
@@ -181,7 +181,7 @@ export default function TiptapEditor({ content, onChange, placeholder = '开始�
             </svg>
           </ToolbarButton>
 
-          <div className="mx-1 h-5 w-px bg-slate-200" />
+          <div className="mx-1 h-5 w-px bg-slate-200 dark:bg-[#2e303a]" />
 
           {/* 公式 */}
           <ToolbarButton onClick={() => insertMath(false)} title="行内公式 ($...$)">
@@ -191,7 +191,7 @@ export default function TiptapEditor({ content, onChange, placeholder = '开始�
             <span className="text-xs font-mono">∑</span>
           </ToolbarButton>
 
-          <div className="mx-1 h-5 w-px bg-slate-200" />
+          <div className="mx-1 h-5 w-px bg-slate-200 dark:bg-[#2e303a]" />
 
           {/* 代码 */}
           <ToolbarButton onClick={() => editor.chain().focus().toggleCodeBlock().run()} isActive={editor.isActive('codeBlock')} title="代码块">
@@ -217,7 +217,7 @@ export default function TiptapEditor({ content, onChange, placeholder = '开始�
       )}
 
       {/* 编辑器主体 */}
-      <div className="flex-1 overflow-y-auto bg-white">
+      <div className="flex-1 overflow-y-auto bg-white dark:bg-[#16171d]">
         <EditorContent editor={editor} />
       </div>
     </div>

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* 亮色主题 */
@@ -48,6 +49,19 @@
   color-scheme: dark;
   background-color: var(--dark-color-background);
   color: var(--dark-color-foreground);
+  --color-background: var(--dark-color-background);
+  --color-foreground: var(--dark-color-foreground);
+  --color-muted: var(--dark-color-muted);
+  --color-muted-foreground: var(--dark-color-muted-foreground);
+  --color-border: var(--dark-color-border);
+  --color-accent: var(--dark-color-accent);
+  --color-accent-foreground: var(--dark-color-accent-foreground);
+  --color-accent-bg: var(--dark-color-accent-bg);
+  --color-accent-border: var(--dark-color-accent-border);
+  --color-card: var(--dark-color-card);
+  --color-card-foreground: var(--dark-color-card-foreground);
+  --color-code-bg: var(--dark-color-code-bg);
+  --color-social-bg: var(--dark-color-social-bg);
 }
 
 body {
@@ -170,3 +184,14 @@ body {
 .dark .tiptap-editor-content code { background: #1e293b; color: #e2e8f0; }
 .dark .tiptap-editor-content blockquote { background: #1e293b; border-left-color: #3b82f6; color: #94a3b8; }
 .dark .tiptap-mathematics-render[data-type="block-math"] { background: #1e293b; border-color: #334155; }
+
+/* 暗色模式下的滚动条 */
+.dark ::-webkit-scrollbar { width: 8px; height: 8px; }
+.dark ::-webkit-scrollbar-track { background: #16171d; }
+.dark ::-webkit-scrollbar-thumb { background: #2e303a; border-radius: 4px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #3e404a; }
+.dark ::-webkit-scrollbar-corner { background: #16171d; }
+
+/* 暗色模式下的编辑器文字颜色 */
+.dark .tiptap-editor-content { color: #e2e8f0; }
+.dark .tiptap-editor-content p.is-editor-empty:first-child::before { color: #4b5563; }
