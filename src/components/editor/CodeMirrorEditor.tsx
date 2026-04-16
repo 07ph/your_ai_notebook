@@ -61,7 +61,7 @@ export function CodeMirrorEditor({
         history(),
         foldGutter(),
         drawSelection(),
-        EditorState.allowMultipleSelections.of(rectangularSelection || crosshairCursor),
+        EditorState.allowMultipleSelections.of(!!rectangularSelection || !!crosshairCursor),
         indentOnInput(),
         bracketMatching(),
         closeBrackets(),

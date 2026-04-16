@@ -106,18 +106,6 @@ export function useFileImport(options: UseFileImportOptions = {}): UseFileImport
     inputRef.current?.click()
   }, [])
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const files = e.target.files
-      if (files && files.length > 0) {
-        readFile(files[0])
-      }
-      // 重置 input，允许重复选择同一文件
-      e.target.value = ''
-    },
-    [readFile],
-  )
-
   return {
     isDragging,
     dragHandlers: {

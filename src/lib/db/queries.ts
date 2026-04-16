@@ -155,7 +155,7 @@ export async function deleteChatSession(id: number): Promise<void> {
 
 export async function addChatMessage(data: {
   sessionId: number
-  role: string
+  role: 'user' | 'assistant' | 'system'
   content: string
   tokenCount: number
   model: string

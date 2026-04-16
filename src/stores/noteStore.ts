@@ -96,7 +96,7 @@ export const useNoteStore = create<NoteState>()((set, get) => ({
     set((state) => ({
       notes: state.notes.map((n) =>
         n.id === noteId
-          ? { ...n, ...updates, updatedAt: new Date().toISOString() }
+          ? { ...n, ...updates, updatedAt: new Date() }
           : n
       ),
     }))

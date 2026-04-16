@@ -98,7 +98,7 @@ export default function TiptapEditor({ content, onChange, placeholder = '开始�
     if (editor && !editor.isFocused) {
       const currentContent = editor.getHTML()
       if (content !== currentContent) {
-        editor.commands.setContent(content, false)
+        editor.commands.setContent(content)
       }
     }
   }, [content, editor])

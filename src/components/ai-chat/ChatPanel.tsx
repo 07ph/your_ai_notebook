@@ -90,7 +90,7 @@ export default function ChatPanel() {
 
     try {
       const provider = getAIProvider(aiProvider, aiApiKey)
-      const model = provider(aiModel)
+      provider(aiModel)
 
       // 构建消息历史
       const historyMessages = storeMessages.map((m) => ({
@@ -305,17 +305,17 @@ export default function ChatPanel() {
 
     // 2. 检测内容特征，自动添加学科标签
     const featureTags: string[] = []
-    if (/\$[^$]+\$/ || /\$\$[\s\S]+?\$\$/) featureTags.push('公式')
-    if (/```[\s\S]*?```/) featureTags.push('代码')
-    if (/^\|.*\|$/m) featureTags.push('表格')
-    if (/^\d+\.\s/m && /^\d+\.\s/m.test(content.slice(0, 500))) featureTags.push('总结')
-    if (/\b证明\b|\b定理\b|\b定义\b|\b公理\b/) featureTags.push('数学')
-    if (/\b函数\b|\b导数\b|\b积分\b|\b极限\b|\b微分\b/) featureTags.push('微积分')
-    if (/\b矩阵\b|\b向量\b|\b线性\b/) featureTags.push('线性代数')
-    if (/\b概率\b|\b统计\b|\b分布\b|\b期望\b/) featureTags.push('概率统计')
-    if (/\bclass\b|\bdef\b|\bfunction\b|\bimport\b/) featureTags.push('编程')
-    if (/\b物理\b|\b力学\b|\b电磁\b|\b光学\b/) featureTags.push('物理')
-    if (/\b化学\b|\b反应\b|\b分子\b|\b方程式\b/) featureTags.push('化学')
+    if (/\$[^$]+\$/.test(content) || /\$\$[\s\S]+?\$\$/.test(content)) featureTags.push('公式')
+    if (/```[\s\S]*?```/.test(content)) featureTags.push('代码')
+    if (/^\|.*\|$/m.test(content)) featureTags.push('表格')
+    if (/^\d+\.\s/m.test(content) && /^\d+\.\s/m.test(content.slice(0, 500))) featureTags.push('总结')
+    if (/\b证明\b|\b定理\b|\b定义\b|\b公理\b/.test(content)) featureTags.push('数学')
+    if (/\b函数\b|\b导数\b|\b积分\b|\b极限\b|\b微分\b/.test(content)) featureTags.push('微积分')
+    if (/\b矩阵\b|\b向量\b|\b线性\b/.test(content)) featureTags.push('线性代数')
+    if (/\b概率\b|\b统计\b|\b分布\b|\b期望\b/.test(content)) featureTags.push('概率统计')
+    if (/\bclass\b|\bdef\b|\bfunction\b|\bimport\b/.test(content)) featureTags.push('编程')
+    if (/\b物理\b|\b力学\b|\b电磁\b|\b光学\b/.test(content)) featureTags.push('物理')
+    if (/\b化学\b|\b反应\b|\b分子\b|\b方程式\b/.test(content)) featureTags.push('化学')
     tags.push(...featureTags)
 
     // 3. 添加 AI 生成标记
@@ -362,8 +362,6 @@ export default function ChatPanel() {
   const removeImage = () => {
     setImagePreview(null)
   }
-
-  const isStreaming = isLoading && streamingContent.length > 0
 
   return (
     <div className="flex h-full flex-col bg-slate-50">
