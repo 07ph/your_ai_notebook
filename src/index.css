@@ -178,12 +178,15 @@ body {
 }
 .math-block-display .katex { font-size: 1.15em; }
 .ai-message-content .katex { font-size: 1em; }
+.katex-inline .katex { font-size: 1em; }
 
 /* 暗色模式下的编辑器样式 */
 .dark .tiptap-editor-content pre { background: #0f172a; }
 .dark .tiptap-editor-content code { background: #1e293b; color: #e2e8f0; }
 .dark .tiptap-editor-content blockquote { background: #1e293b; border-left-color: #3b82f6; color: #94a3b8; }
 .dark .tiptap-mathematics-render[data-type="block-math"] { background: #1e293b; border-color: #334155; }
+.dark .math-block-display { background: #1e293b; border-color: #334155; }
+.dark .ai-message-content .katex .base { color: #e2e8f0; }
 
 /* 暗色模式下的滚动条 */
 .dark ::-webkit-scrollbar { width: 8px; height: 8px; }

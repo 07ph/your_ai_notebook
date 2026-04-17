@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import rehypeHighlight from 'rehype-highlight'
 import katex from 'katex'
+import 'katex/dist/katex.min.css'
 import type { ChatMessage } from '@/types'
 import { cn } from '@/lib/utils/cn'
 
@@ -33,8 +34,10 @@ function renderMathInMarkdown(content: string): string {
         displayMode: true,
         throwOnError: false,
         output: 'html',
+        trust: true,
       })
-      return `<div class="math-block-display">${html}</div>`
+      // 用特殊标记包裹，避免被 rehype 插件处理
+      return `<div class="math-block-display" data-math="true">${html}</div>`
     } catch {
       return `<div class="math-block-display" style="color:red">${formula}</div>`
     }
@@ -47,8 +50,10 @@ function renderMathInMarkdown(content: string): string {
         displayMode: false,
         throwOnError: false,
         output: 'html',
+        trust: true,
       })
-      return html
+      // 用 span 包裹并标记
+      return `<span class="katex-inline" data-math="true">${html}</span>`
     } catch {
       return `<span style="color:red">${formula}</span>`
     }

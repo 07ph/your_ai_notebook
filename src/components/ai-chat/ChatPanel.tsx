@@ -26,13 +26,33 @@ export default function ChatPanel() {
   const [streamingContent, setStreamingContent] = useState('')
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const abortControllerRef = useRef<AbortController | null>(null)
+  const userScrolledUpRef = useRef(false)
 
-  // 自动滚动到底部
+  // 智能滚动：只有用户在底部时才自动滚动
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const container = messagesContainerRef.current
+    if (!container) return
+
+    // 检查用户是否滚动到了非底部位置
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container
+      // 距离底部超过 100px 认为是"向上滚动"
+      userScrolledUpRef.current = scrollHeight - scrollTop - clientHeight > 100
+    }
+
+    container.addEventListener('scroll', handleScroll)
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // 只有用户没有向上滚动时才自动滚动
+  useEffect(() => {
+    if (!userScrolledUpRef.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
   }, [storeMessages, streamingContent])
 
   // 自动调整 textarea 高度
@@ -366,7 +386,7 @@ export default function ChatPanel() {
   return (
     <div className="flex h-full flex-col bg-slate-50 dark:bg-[#16171d]">
       {/* 消息列表区域 */}
-      <div className="flex-1 overflow-y-auto px-4 py-6">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto px-4 py-6">
         {storeMessages.length === 0 && !streamingContent ? (
           <div className="flex h-full flex-col items-center justify-center text-slate-400 dark:text-slate-500">
             <div className="mb-4 text-5xl">💬</div>
