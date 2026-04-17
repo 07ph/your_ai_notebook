@@ -188,6 +188,10 @@ body {
 .dark .math-block-display { background: #1e293b; border-color: #334155; }
 .dark .ai-message-content .katex .base { color: #e2e8f0; }
 
+/* 隐藏 KaTeX 生成的 SVG（使用 MathML 渲染，避免 SVG 路径泄露） */
+.katex .katex-html { display: none; }
+.katex .katex-mathml { display: inline !important; }
+
 /* 暗色模式下的滚动条 */
 .dark ::-webkit-scrollbar { width: 8px; height: 8px; }
 .dark ::-webkit-scrollbar-track { background: #16171d; }

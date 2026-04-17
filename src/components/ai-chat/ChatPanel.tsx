@@ -84,17 +84,20 @@ export default function ChatPanel() {
 
     const sessionId = await ensureSession()
 
+    // 保存当前图片数据（发送后清除）
+    const currentImage = imagePreview
+    setImagePreview(null)
+
     // 添加用户消息到 store
     addMessage({
       sessionId,
       role: 'user',
-      content: imagePreview ? `${trimmed}\n[已上传图片]`.trim() : trimmed,
+      content: trimmed || '请看图片',
+      imageUrl: currentImage || undefined,
       tokenCount: 0,
       model: aiModel,
     })
 
-    // 保存当前图片数据（发送后清除）
-    const currentImage = imagePreview
     setInput('')
     setLoading(true)
     setStreamingContent('')
@@ -104,6 +107,7 @@ export default function ChatPanel() {
     if (currentImage && visionUnsupportedModels.includes(aiModel)) {
       alert(`当前模型 ${aiModel} 不支持图片输入。\n\n千问用户请选择「千问 VL Max」或「千问 VL Plus」。\nOpenAI 用户请选择「GPT-4o」。`)
       setInput(trimmed)
+      setImagePreview(currentImage)
       setLoading(false)
       return
     }

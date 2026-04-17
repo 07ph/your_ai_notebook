@@ -33,10 +33,9 @@ function renderMathInMarkdown(content: string): string {
       const html = katex.renderToString(formula.trim(), {
         displayMode: true,
         throwOnError: false,
-        output: 'html',
+        output: 'mathml',
         trust: true,
       })
-      // 用特殊标记包裹，避免被 rehype 插件处理
       return `<div class="math-block-display" data-math="true">${html}</div>`
     } catch {
       return `<div class="math-block-display" style="color:red">${formula}</div>`
@@ -49,10 +48,9 @@ function renderMathInMarkdown(content: string): string {
       const html = katex.renderToString(formula.trim(), {
         displayMode: false,
         throwOnError: false,
-        output: 'html',
+        output: 'mathml',
         trust: true,
       })
-      // 用 span 包裹并标记
       return `<span class="katex-inline" data-math="true">${html}</span>`
     } catch {
       return `<span style="color:red">${formula}</span>`
@@ -117,7 +115,19 @@ export default function MessageBubble({ message, onSaveToNote }: MessageBubblePr
           )}
         >
           {isUser ? (
-            <p className="whitespace-pre-wrap">{message.content}</p>
+            <div className="flex flex-col gap-2">
+              {message.imageUrl && (
+                <img
+                  src={message.imageUrl}
+                  alt="上传的图片"
+                  className="max-w-[240px] max-h-[200px] rounded-lg object-cover cursor-pointer"
+                  onClick={() => window.open(message.imageUrl, '_blank')}
+                />
+              )}
+              {message.content && message.content !== '请看图片' && (
+                <p className="whitespace-pre-wrap">{message.content}</p>
+              )}
+            </div>
           ) : (
             <div className="ai-message-content prose prose-sm max-w-none prose-p:my-1.5 prose-headings:my-2 prose-headings:text-slate-900 prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5 prose-pre:my-2 prose-code:rounded prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[13px] prose-code:before:content-none prose-code:after:content-none prose-pre:bg-slate-900 prose-pre:text-slate-100 prose-pre:rounded-lg prose-blockquote:border-l-blue-500 prose-blockquote:bg-blue-50/50 prose-a:text-blue-600 prose-strong:text-slate-900 prose-table:text-sm prose-th:bg-slate-50">
               <ReactMarkdown
