@@ -157,6 +157,7 @@ export async function addChatMessage(data: {
   sessionId: number
   role: 'user' | 'assistant' | 'system'
   content: string
+  imageUrl?: string
   tokenCount: number
   model: string
 }): Promise<number> {

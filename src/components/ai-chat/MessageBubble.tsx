@@ -105,7 +105,7 @@ export default function MessageBubble({ message, onSaveToNote }: MessageBubblePr
       </div>
 
       {/* 消息内容 */}
-      <div className={cn('flex max-w-[75%] flex-col gap-1', isUser ? 'items-end' : 'items-start')}>
+      <div className={cn('flex max-w-[85%] flex-col gap-1', isUser ? 'items-end' : 'items-start')}>
         <div
           className={cn(
             'rounded-2xl px-4 py-2.5 text-sm leading-relaxed',
@@ -129,7 +129,7 @@ export default function MessageBubble({ message, onSaveToNote }: MessageBubblePr
               )}
             </div>
           ) : (
-            <div className="ai-message-content prose prose-sm max-w-none prose-p:my-1.5 prose-headings:my-2 prose-headings:text-slate-900 prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5 prose-pre:my-2 prose-code:rounded prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[13px] prose-code:before:content-none prose-code:after:content-none prose-pre:bg-slate-900 prose-pre:text-slate-100 prose-pre:rounded-lg prose-blockquote:border-l-blue-500 prose-blockquote:bg-blue-50/50 prose-a:text-blue-600 prose-strong:text-slate-900 prose-table:text-sm prose-th:bg-slate-50">
+            <div className="ai-message-content prose prose-sm max-w-none prose-p:my-1.5 prose-headings:my-2 prose-headings:text-slate-900 dark:prose-headings:text-slate-100 prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5 prose-pre:my-2 prose-code:rounded prose-code:bg-slate-100 dark:prose-code:bg-[#1e293b] prose-code:px-1.5 prose-code:py-0.5 prose-code:text-[13px] prose-code:before:content-none prose-code:after:content-none prose-pre:bg-slate-900 prose-pre:text-slate-100 prose-pre:rounded-lg prose-blockquote:border-l-blue-500 prose-blockquote:bg-blue-50/50 dark:prose-blockquote:bg-blue-900/20 prose-a:text-blue-600 prose-strong:text-slate-900 dark:prose-strong:text-slate-100 prose-table:text-sm prose-th:bg-slate-50 dark:prose-th:bg-[#1e293b]">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw, rehypeHighlight]}

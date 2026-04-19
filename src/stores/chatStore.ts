@@ -70,6 +70,7 @@ export const useChatStore = create<ChatState>()((set, get) => ({
       sessionId: message.sessionId,
       role: message.role,
       content: message.content,
+      imageUrl: message.imageUrl,
       tokenCount: message.tokenCount,
       model: message.model,
     })
