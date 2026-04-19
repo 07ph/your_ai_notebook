@@ -4,6 +4,7 @@ import SaveToNoteModal from '@/components/ui/SaveToNoteModal'
 import { useChatStore } from '@/stores/chatStore'
 import { useSettingStore } from '@/stores/settingStore'
 import { getAIProvider } from '@/lib/ai/providers'
+import * as queries from '@/lib/db/queries'
 import { cn } from '@/lib/utils/cn'
 
 export default function ChatPanel() {
@@ -250,10 +251,162 @@ export default function ChatPanel() {
     } finally {
       setStreamingContent('')
       setLoading(false)
-      setImagePreview(null) // 发送完成（成功或失败）后清除图片预览
       abortControllerRef.current = null
     }
   }
+
+  // 停止生成
+  const handleStop = useCallback(() => {
+    abortControllerRef.current?.abort()
+    abortControllerRef.current = null
+    // 将流式内容保存为消息
+    if (streamingContent) {
+      addMessage({
+        sessionId: currentSessionId ?? 0,
+        role: 'assistant',
+        content: streamingContent,
+        tokenCount: 0,
+        model: aiModel,
+      })
+      setStreamingContent('')
+    }
+    setLoading(false)
+  }, [streamingContent, aiModel, currentSessionId, addMessage])
+
+  // 重新生成（对最后一条 AI 消息重新提问）
+  const handleRegenerate = useCallback(async () => {
+    if (isLoading) return
+    if (!aiApiKey) {
+      alert('请先在设置中配置 AI API Key')
+      return
+    }
+
+    // 找到最后一条用户消息
+    const userMessages = [...storeMessages].reverse().filter(m => m.role === 'user')
+    if (userMessages.length === 0) return
+
+    // 删除最后一条 AI 消息
+    const lastAiMsg = [...storeMessages].reverse().find(m => m.role === 'assistant')
+    if (lastAiMsg?.id) {
+      queries.deleteChatMessage(lastAiMsg.id)
+    }
+
+    setLoading(true)
+    setStreamingContent('')
+
+    try {
+      let baseURL = ''
+      let headers: Record<string, string> = {}
+
+      if (aiProvider === 'openai') {
+        baseURL = 'https://api.openai.com/v1/chat/completions'
+        headers = {
+          'Authorization': `Bearer ${aiApiKey}`,
+          'Content-Type': 'application/json',
+        }
+      } else if (aiProvider === 'deepseek') {
+        baseURL = 'https://api.deepseek.com/v1/chat/completions'
+        headers = {
+          'Authorization': `Bearer ${aiApiKey}`,
+          'Content-Type': 'application/json',
+        }
+      } else if (aiProvider === 'qwen') {
+        baseURL = 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions'
+        headers = {
+          'Authorization': `Bearer ${aiApiKey}`,
+          'Content-Type': 'application/json',
+        }
+      }
+
+      abortControllerRef.current = new AbortController()
+
+      // 构建消息历史（排除最后一条 AI 消息）
+      const historyMessages = storeMessages
+        .filter(m => m.role !== 'assistant' || m.id !== lastAiMsg?.id)
+        .map(m => ({ role: m.role as 'user' | 'assistant', content: m.content }))
+
+      const response = await fetch(baseURL, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          model: aiModel,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            ...historyMessages,
+          ],
+          stream: true,
+        }),
+        signal: abortControllerRef.current.signal,
+      })
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        let errorMessage = `HTTP ${response.status}`
+        try { errorMessage = JSON.parse(errorText).error.message } catch {}
+        addMessage({
+          sessionId: currentSessionId ?? 0,
+        role: 'assistant',
+        content: `⚠️ **请求失败**：${errorMessage}`,
+        tokenCount: 0,
+        model: aiModel,
+      })
+      return
+    }
+
+    const reader = response.body?.getReader()
+    if (!reader) return
+
+    const decoder = new TextDecoder()
+    let fullContent = ''
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      const chunk = decoder.decode(value, { stream: true })
+      const lines = chunk.split('\n')
+
+      for (const line of lines) {
+        const trimmed = line.trim()
+        if (!trimmed || !trimmed.startsWith('data: ')) continue
+        const data = trimmed.slice(6)
+        if (data === '[DONE]') break
+
+        try {
+          const parsed = JSON.parse(data)
+          const delta = parsed.choices?.[0]?.delta?.content
+          if (delta) {
+            fullContent += delta
+            setStreamingContent(fullContent)
+          }
+        } catch {}
+      }
+    }
+
+    if (fullContent) {
+      addMessage({
+        sessionId: currentSessionId ?? 0,
+        role: 'assistant',
+        content: fullContent,
+        tokenCount: 0,
+        model: aiModel,
+      })
+    }
+  } catch (err: unknown) {
+    if (err instanceof Error && err.name === 'AbortError') return
+    addMessage({
+      sessionId: currentSessionId ?? 0,
+      role: 'assistant',
+      content: `⚠️ **请求失败**：网络错误，请重试`,
+        tokenCount: 0,
+        model: aiModel,
+      })
+    } finally {
+      setStreamingContent('')
+      setLoading(false)
+      abortControllerRef.current = null
+    }
+  }, [isLoading, aiApiKey, storeMessages, aiModel, aiProvider, systemPrompt, addMessage])
 
   const handlePaste = useCallback((e: React.ClipboardEvent) => {
     const items = e.clipboardData?.items
@@ -503,23 +656,52 @@ export default function ChatPanel() {
             />
           </div>
 
-          {/* 发送按钮 */}
-          <button
-            type="submit"
-            disabled={(!input.trim() && !imagePreview) || isLoading}
-            className={cn(
-              'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors',
-              (input.trim() || imagePreview) && !isLoading
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
-                : 'cursor-not-allowed bg-slate-100 dark:bg-[#2e303a] text-slate-400 dark:text-slate-500'
-            )}
-            title="发送"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-            </svg>
-          </button>
+          {/* 发送/停止按钮 */}
+          {isLoading ? (
+            <button
+              type="button"
+              onClick={handleStop}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500 text-white transition-colors hover:bg-red-600"
+              title="停止生成"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <rect x="5" y="5" width="10" height="10" rx="1" />
+              </svg>
+            </button>
+          ) : (
+            <button
+              type="submit"
+              disabled={(!input.trim() && !imagePreview)}
+              className={cn(
+                'flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors',
+                (input.trim() || imagePreview)
+                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'cursor-not-allowed bg-slate-100 dark:bg-[#2e303a] text-slate-400 dark:text-slate-500'
+              )}
+              title="发送"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+              </svg>
+            </button>
+          )}
         </form>
+
+        {/* 重新生成按钮 */}
+        {storeMessages.length > 0 && !isLoading && !streamingContent && (
+          <div className="mx-auto mt-2 flex max-w-3xl justify-center">
+            <button
+              onClick={handleRegenerate}
+              className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs text-slate-400 dark:text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-[#2e303a] hover:text-slate-600 dark:hover:text-slate-300"
+              title="重新生成"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" />
+              </svg>
+              重新生成
+            </button>
+          </div>
+        )}
 
         <p className="mx-auto mt-2 max-w-3xl text-center text-xs text-slate-400 dark:text-slate-500">
           当前模型：{aiModel} | {aiProvider === 'qwen' ? '通义千问' : aiProvider === 'deepseek' ? 'DeepSeek' : 'OpenAI'}

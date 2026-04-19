@@ -174,6 +174,10 @@ export async function getChatMessages(sessionId: number): Promise<ChatMessage[]>
     .sortBy('createdAt')
 }
 
+export async function deleteChatMessage(id: number): Promise<void> {
+  await db.chatMessages.delete(id)
+}
+
 // ==================== Settings ====================
 
 export async function getSetting(key: string): Promise<string | undefined> {
